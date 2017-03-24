@@ -36,7 +36,7 @@ def expand(template: str) -> str:
         index += 1
 
     if len(phrases) <= 0:
-        phrases.append(phrase);
+       phrases.append(phrase);
 
     # To Iterate is Human, to Recurse, Divine
     iterate = []
@@ -47,3 +47,15 @@ def expand(template: str) -> str:
             iterate.extend(expand(string))
 
     return iterate
+
+
+print(expand('(hello|hi) (|mighty) world'))
+print(expand('hello (|mighty) world'))
+print(expand('(great|good|nice) day'))
+print(expand("(when is|when's) the (|next) Dodger's (|baseball) game?"))
+print(expand('(|hello) world'))
+print(expand('hello world'))
+print(expand('(hello)'))
+print(expand('(hello) world'))
+print(expand('(B-alorscamarcheavecunBdevant) world'))
+print(expand('(b-truc) world'))
