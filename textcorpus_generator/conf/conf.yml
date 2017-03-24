@@ -1,0 +1,14 @@
+# conf for logs
+log:
+  level_values:
+    CRITICAL: 50
+    ERROR: 40
+    WARNING: 30
+    INFO: 20
+    DEBUG: 10
+    commentaire: Valeurs utilisables pour le level
+  level: INFO
+  dir: "/tmp/"
+  filename: textcorpusgenerator.log
+  max_filesize: 1000000
+  max_files: 10
