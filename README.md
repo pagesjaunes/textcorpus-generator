@@ -16,3 +16,12 @@ To check that all is ok, run the unit tests with pytest :
 ```
 pytest test/
 ```
+
+# Running main generator
+To generate a corpus run the main generator
+```
+python generate_corpus.py --help
+
+Usage:
+    generate_corpus.py --template=filepath --output_path=dirpath [--debug]
+```
