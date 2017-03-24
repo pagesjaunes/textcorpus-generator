@@ -1,5 +1,5 @@
 """
-    Test of ???
+    Test of utterance_expander
 """
 from textcorpus_generator.util.utterance_expander import expand
 
