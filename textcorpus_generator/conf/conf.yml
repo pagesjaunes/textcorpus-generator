@@ -1,3 +1,4 @@
+version: 1.0.0 beta
 # conf for logs
 log:
   level_values:
