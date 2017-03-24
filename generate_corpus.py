@@ -2,7 +2,7 @@
     Text corpus generation
 
 Usage:
-    generate_corpus.py --template=filepath --output_path=dirpath [--debug]
+    generate_corpus.py [--template=filepath] [--output_path=dirpath] [--debug]
 
 Options:
     --help                  Displays help message
@@ -16,18 +16,7 @@ Options:
 from docopt import docopt
 from textcorpus_generator.commons import configuration, logger
 
-
-
-
-def process() :
-    logger.info("\nCorpus generator " + arguments)
-
-    # Generate train outputs Path
-
-    # Generate validation outputs
-
-    # Generate test outputs
-
+import logging
 
 if __name__ == '__main__':
     conf = configuration.load()
@@ -41,3 +30,4 @@ if __name__ == '__main__':
 
     logger.configure(conf['log']['level_values'][conf['log']['level']], conf['log']['dir'], conf['log']['filename'], conf['log']['max_filesize'], conf['log']['max_files'])
 
+    logging.getLogger(__name__).info("It works !")

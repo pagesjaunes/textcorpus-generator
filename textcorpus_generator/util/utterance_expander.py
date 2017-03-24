@@ -1,4 +1,5 @@
 import re
+import logging
 
 PHRASE_PARTS_REGEX = re.compile('\(.*?\)+|[^[\s]+')  # ("\\(.*?\\)+|[^\\[\\s]+")
 
@@ -10,6 +11,10 @@ WORDS_INSIDE_EXPAND_SLOT_REGEX = re.compile('([^||()]+)')  # ("[^|()]+")
 
 
 def expand(template: str) -> str:
+    logger = logging.getLogger(__name__)
+
+    logger.info("expand !!!")
+
     phrases = []
 
     # single word inside expand slot

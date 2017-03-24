@@ -2,7 +2,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 # Application logger
-logger = logging.getLogger('textcorpus-gen')
+logger = logging.getLogger()
 
 # Logger conf
 def configure(p_level, p_dir=None, p_filename=None, p_max_filesize=100000, p_max_files=1, p_prefix=None):
@@ -12,9 +12,9 @@ def configure(p_level, p_dir=None, p_filename=None, p_max_filesize=100000, p_max
 
     # String format
     if p_prefix:
-        formatter = logging.Formatter('[' + p_prefix + '] %(asctime)s :: %(levelname)s :: %(message)s')
+        formatter = logging.Formatter('[' + p_prefix + '] %(asctime)s :: %(levelname)s :: %(module)s.%(funcName)s : %(message)s')
     else:
-        formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
+        formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(module)s.%(funcName)s : %(message)s')
 
     # Handler console
     stream_handler = logging.StreamHandler()
