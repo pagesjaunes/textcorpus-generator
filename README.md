@@ -23,5 +23,5 @@ To generate a corpus run the main generator
 python generate_corpus.py --help
 
 Usage:
-    generate_corpus.py --template=filepath --output_path=dirpath [--debug]
+    generate_corpus.py --template=filepath --dictionaries=dictionaries_path --output_path=output_path [--debug]
 ```

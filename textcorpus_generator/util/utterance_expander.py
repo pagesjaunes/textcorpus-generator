@@ -11,10 +11,6 @@ WORDS_INSIDE_EXPAND_SLOT_REGEX = re.compile('([^||()]+)')  # ("[^|()]+")
 
 
 def expand(template: str) -> str:
-    logger = logging.getLogger(__name__)
-
-    logger.info("expand !!!")
-
     phrases = []
 
     # single word inside expand slot
@@ -25,7 +21,7 @@ def expand(template: str) -> str:
     for part in parts:
         words = WORDS_INSIDE_EXPAND_SLOT_REGEX.findall(part)
 
-        if not EXPAND_SLOT_REGEX.search(part) == None:
+        if not EXPAND_SLOT_REGEX.search(part) is None:
             for word in words:
                 copy = parts
                 copy[index] = word
@@ -41,26 +37,14 @@ def expand(template: str) -> str:
         index += 1
 
     if len(phrases) <= 0:
-       phrases.append(phrase);
+        phrases.append(phrase);
 
     # To Iterate is Human, to Recurse, Divine
     iterate = []
     for string in phrases:
-        if EXPAND_SLOT_REGEX.search(string) == None:
+        if EXPAND_SLOT_REGEX.search(string) is None:
             iterate.append(string)
         else:
             iterate.extend(expand(string))
 
     return iterate
-
-
-print(expand('(hello|hi) (|mighty) world'))
-print(expand('hello (|mighty) world'))
-print(expand('(great|good|nice) day'))
-print(expand("(when is|when's) the (|next) Dodger's (|baseball) game?"))
-print(expand('(|hello) world'))
-print(expand('hello world'))
-print(expand('(hello)'))
-print(expand('(hello) world'))
-print(expand('(B-alorscamarcheavecunBdevant) world'))
-print(expand('(b-truc) world'))
