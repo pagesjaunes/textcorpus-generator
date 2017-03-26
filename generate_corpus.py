@@ -16,6 +16,8 @@ Options:
 import random
 
 import logging
+
+import re
 from docopt import docopt
 
 from textcorpus_generator.commons import configuration, logger
@@ -55,13 +57,14 @@ def build_sentence_and_iob(template: str) -> str:
             elif token.startswith("B-"):
                 item = pick_random_item_in_dictionary(token)
 
-                # remove .1 .2 .3...
-                token = token.replace('.0', '')
-                token = token.replace('.1', '')
-                token = token.replace('.2', '')
-                token = token.replace('.3', '')
-                token = token.replace('.4', '')
-                token = token.replace('.5', '')
+                # remove extensions ...
+                token = re.sub('.dela', '', token)
+                token = re.sub('.du', '', token)
+                token = re.sub('.le', '', token)
+                token = re.sub('.la', '', token)
+                token = re.sub('.un', '', token)
+                token = re.sub('.une', '', token)
+                token = re.sub('.ma', '', token)
 
                 sentence.append(item)
                 iob.append(token)
@@ -82,9 +85,9 @@ def build_sentence_and_iob(template: str) -> str:
 
 
 def process(output_path: str, nb_iterations: int):
-    logger.info('Generate train corpus')
 
     # Generate train corpus
+    logger.info('Generate train corpus')
     for template in templates_loader.templates:
         parts = template.split(";")
 
@@ -129,3 +132,6 @@ if __name__ == '__main__':
     if nb_iterations is None:
         nb_iterations = 10  # default
     process(arguments['--output_path'], nb_iterations)
+
+    #print(labeled_sentences[0])
+    #print(labeled_sentences[1])
