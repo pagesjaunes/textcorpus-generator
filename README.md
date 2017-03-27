@@ -20,10 +20,21 @@ pytest test/
 # Running main generator
 To generate a corpus run the main generator
 ```
-python generate_corpus.py --help
+"""
+    Text corpus generation
 
 Usage:
-    generate_corpus.py --templates=filepath --dictionaries=path --output_path=path [--iterations=int] [--debug]
+    generate_corpus.py --templates=filepath --dictionaries=path --output_path=path [--utterance=int] [--debug]
+
+Options:
+    --help                  Displays help message
+    --templates=filepath    Sets the path to the template file
+    --dictionaries=path     Sets the path to the dictionary directory
+    --output_path=path      Sets the path where to write the generated corpus
+    --utterance=int         Number of utterances over a template for a given
+    --debug                 Debug version of the script
+
+"""
 ```
 
 # Template format
