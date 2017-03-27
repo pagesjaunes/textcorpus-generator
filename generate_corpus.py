@@ -58,13 +58,15 @@ def build_sentence_and_iob(template: str) -> str:
                 item = pick_random_item_in_dictionary(token)
 
                 # remove extensions ...
-                token = re.sub('.dela', '', token)
-                token = re.sub('.du', '', token)
-                token = re.sub('.le', '', token)
-                token = re.sub('.la', '', token)
-                token = re.sub('.un', '', token)
-                token = re.sub('.une', '', token)
-                token = re.sub('.ma', '', token)
+                token = re.sub('.dela$', '', token)
+                token = re.sub('.du$', '', token)
+                token = re.sub('.des$', '', token)
+                token = re.sub('.le$', '', token)
+                token = re.sub('.la$', '', token)
+                token = re.sub('.un$', '', token)
+                token = re.sub('.une$', '', token)
+                token = re.sub('.ma$', '', token)
+                token = re.sub('.mon$', '', token)
 
                 sentence.append(item)
                 iob.append(token)
@@ -133,5 +135,5 @@ if __name__ == '__main__':
         nb_iterations = 10  # default
     process(arguments['--output_path'], nb_iterations)
 
-    #print(labeled_sentences[0])
-    #print(labeled_sentences[1])
+    print(labeled_sentences[0])
+    print(labeled_sentences[1])
