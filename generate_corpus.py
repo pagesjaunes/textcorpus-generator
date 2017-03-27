@@ -9,7 +9,7 @@ Options:
     --templates=filepath    Sets the path to the template file
     --dictionaries=path     Sets the path to the dictionary directory
     --output_path=path      Sets the path where to write the generated corpus
-    --utterance=int         Number of iterations over a template for a given Utterance
+    --utterance=int         Number of utterances over a template for a given
     --debug                 Debug version of the script
 
 """
