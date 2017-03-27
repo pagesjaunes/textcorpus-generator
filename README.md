@@ -25,3 +25,10 @@ python generate_corpus.py --help
 Usage:
     generate_corpus.py --templates=filepath --dictionaries=path --output_path=path [--iterations=int] [--debug]
 ```
+
+# Template format
+
+> The # character can be used at the beginning of a line to skip it from sentence generation.
+
+
+# BOI (Begin Outside Inner) pattern
