@@ -7,10 +7,17 @@ EXPAND_SLOT_REGEX = re.compile('\(.*\|.*\)')  # ("\\(.*\\|.*\\)")
 
 SINGLE_WORD_INSIDE_EXPAND_SLOT_REGEX = re.compile('\(([\w-]+)\)')  # ("\\(([\\w-]+)\\)")
 
-WORDS_INSIDE_EXPAND_SLOT_REGEX = re.compile('([^||()]+)')  # ("[^|()]+")
+WORDS_INSIDE_EXPAND_SLOT_REGEX = re.compile('([^|()]+)')  # ("[^|()]+")
 
 
 def expand(template: str) -> str:
+    """
+    Expand a template to generate a sentence
+    :param template: A string that represents a template
+    :return: A true sentence that follow the template pattern
+    """
+    logger = logging.getLogger(__name__)
+    logger.debug("Expanding string {sentence} ...".format(sentence=template))
     phrases = []
 
     # single word inside expand slot
@@ -37,7 +44,7 @@ def expand(template: str) -> str:
         index += 1
 
     if len(phrases) <= 0:
-        phrases.append(phrase);
+        phrases.append(phrase)
 
     # To Iterate is Human, to Recurse, Divine
     iterate = []

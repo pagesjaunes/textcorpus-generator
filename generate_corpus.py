@@ -7,15 +7,16 @@ Usage:
 Options:
     --help                  Displays help message
     --templates=filepath    Sets the path to the template file
-    --dictionaries=path     Sets the path to the ditionaries file
+    --dictionaries=path     Sets the path to the dictionary directory
     --output_path=path      Sets the path where to write the generated corpus
-    --utterance=int         Utterance count on a template
+    --utterance=int         Number of iterations over a template for a given Utterance
     --debug                 Debug version of the script
 
 """
 import logging
 import random
 import re
+import os
 
 from docopt import docopt
 
@@ -27,8 +28,15 @@ labeled_sentences = []
 
 
 def pick_random_item_in_dictionary(token: str) -> str:
-    dictionary = dictionaies_loader.dictionaries[token]
+    """
+    Get an item randomnly from a dictionnary
+
+    :param token: A token that match a dictionnary (X- or B-)
+    :return: A word taken randomly from the dictionnary, or an empty string it no matching dict found
+    """
+    dictionary = dictionaries_loader.dictionaries[token]
     if dictionary is None:
+        logger.warn("No matchning dicionnary for {token}".format(token=token))
         return ""
     else:
         index = random.randint(0, len(dictionary) - 1)
@@ -36,6 +44,14 @@ def pick_random_item_in_dictionary(token: str) -> str:
 
 
 def build_sentence_and_iob(template: str) -> str:
+    """
+    From a given template, for each sentence :
+     - replace "B-" and "X-" words by a set of words from the matching dictionnary
+     - build the matching IOB pattern
+
+    :param template: A sentence template containing B- and X- strings
+    :return: A set of instanciated sentences and their corresponding IOB string
+    """
     sentence = []
     iob = []
 
@@ -43,6 +59,7 @@ def build_sentence_and_iob(template: str) -> str:
     if template.find("B-") > 0 or template.find("X-") > 0:
         tokens = template.split(' ')
         for token in tokens:
+            # X entities can be pick from a dictionnary but are tagged as "O" (IOB pattern)
             if token.startswith("X-"):
                 item = pick_random_item_in_dictionary(token)
 
@@ -53,10 +70,13 @@ def build_sentence_and_iob(template: str) -> str:
                 while nb_i_label > 0:
                     iob.append("O")
                     nb_i_label -= 1
+            # B entities are picked from a dictionnary and tagged as B- (I-)*
             elif token.startswith("B-"):
                 item = pick_random_item_in_dictionary(token)
 
-                # remove extensions ...
+                # 'B-' pattern may be artificially suffixed by stop words (deal with gender issue)
+                # but we want a lonely entity for all the B- sharing the same prefix.
+                # This removes artificial extension :
                 token = re.sub('.dela$', '', token)
                 token = re.sub('.du$', '', token)
                 token = re.sub('.des$', '', token)
@@ -78,6 +98,7 @@ def build_sentence_and_iob(template: str) -> str:
                 while nb_i_label > 0:
                     iob.append(i_label)
                     nb_i_label -= 1
+            # Deals with "hard coded" words of the template
             else:
                 sentence.append(token)
                 iob.append("O")
@@ -104,10 +125,15 @@ def process(output_path: str, nb_utterance: int):
     random.shuffle(labeled_sentences)
 
     # generate files
-    logger.info('Generate train outputs files')
-    with open(output_path + '/sentences.txt', 'w') as f_sentence, open(output_path + '/iobs.txt', 'w') as f_iob, open(
-                    output_path + '/intents.txt', 'w') as f_intent:
+    sentence_file = os.path.join(output_path, 'sentences.txt')
+    iob_file = os.path.join(output_path, 'iobs.txt')
+    intents_file = os.path.join(output_path, 'intents.txt')
+    logger.info('Generate train outputs files : {sentence}, {iob} and {intents}'.format(
+        sentence=sentence_file, iob=iob_file, intents=intents_file))
+    with open(sentence_file, 'w') as f_sentence, open(iob_file, 'w') as f_iob, open(
+                    intents_file, 'w') as f_intent:
         for item in labeled_sentences:
+            logger.debug("Process sentence : {}".format(item))
             parts = item.split(';')
             f_sentence.write(parts[0] + '\n')
             f_iob.write(parts[1] + '\n')
@@ -116,6 +142,7 @@ def process(output_path: str, nb_utterance: int):
 
 if __name__ == '__main__':
     conf = configuration.load()
+    script_dir = os.path.dirname(__file__)
 
     # Command line args
     # __doc__ contains the module docstring
@@ -129,9 +156,7 @@ if __name__ == '__main__':
 
     logger = logging.getLogger(__name__)
 
-    dictionaies_loader = DictionariesLoader(arguments['--dictionaries'])
-    templates_loader = TemplateLoader(arguments['--templates'])
-    nb_iterations = arguments['--iterations']
-    if nb_iterations is None:
-        nb_iterations = 10  # default
+    dictionaries_loader = DictionariesLoader(os.path.join(script_dir, arguments['--dictionaries']))
+    templates_loader = TemplateLoader(os.path.join(script_dir, arguments['--templates']))
+    nb_iterations = int(arguments['--utterance']) or 10
     process(arguments['--output_path'], nb_iterations)
