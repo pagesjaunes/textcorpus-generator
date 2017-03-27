@@ -2,22 +2,21 @@
     Text corpus generation
 
 Usage:
-    generate_corpus.py --templates=filepath --dictionaries=path --output_path=path [--iterations=int] [--debug]
+    generate_corpus.py --templates=filepath --dictionaries=path --output_path=path [--utterance=int] [--debug]
 
 Options:
     --help                  Displays help message
     --templates=filepath    Sets the path to the template file
     --dictionaries=path     Sets the path to the ditionaries file
     --output_path=path      Sets the path where to write the generated corpus
-    --iterations=int        Iterations count on a template
+    --utterance=int         Utterance count on a template
     --debug                 Debug version of the script
 
 """
-import random
-
 import logging
-
+import random
 import re
+
 from docopt import docopt
 
 from textcorpus_generator.commons import configuration, logger
@@ -63,10 +62,13 @@ def build_sentence_and_iob(template: str) -> str:
                 token = re.sub('.des$', '', token)
                 token = re.sub('.le$', '', token)
                 token = re.sub('.la$', '', token)
+                token = re.sub('.les$', '', token)
                 token = re.sub('.un$', '', token)
                 token = re.sub('.une$', '', token)
+                token = re.sub('.des$', '', token)
                 token = re.sub('.ma$', '', token)
                 token = re.sub('.mon$', '', token)
+                token = re.sub('.mes$', '', token)
 
                 sentence.append(item)
                 iob.append(token)
@@ -86,14 +88,13 @@ def build_sentence_and_iob(template: str) -> str:
         return ''
 
 
-def process(output_path: str, nb_iterations: int):
-
+def process(output_path: str, nb_utterance: int):
     # Generate train corpus
     logger.info('Generate train corpus')
     for template in templates_loader.templates:
         parts = template.split(";")
 
-        for iteration in range(0, nb_iterations):
+        for iteration in range(0, nb_utterance):
             sentence_and_iob = build_sentence_and_iob(parts[0])
             if len(sentence_and_iob) > 0:
                 labeled_sentences.append(sentence_and_iob + ';' + parts[1])
