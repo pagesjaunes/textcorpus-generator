@@ -134,6 +134,3 @@ if __name__ == '__main__':
     if nb_iterations is None:
         nb_iterations = 10  # default
     process(arguments['--output_path'], nb_iterations)
-
-    print(labeled_sentences[0])
-    print(labeled_sentences[1])
