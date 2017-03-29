@@ -14,9 +14,9 @@ Options:
 
 """
 import logging
+import os
 import random
 import re
-import os
 
 from docopt import docopt
 
@@ -77,18 +77,7 @@ def build_sentence_and_iob(template: str) -> str:
                 # 'B-' pattern may be artificially suffixed by stop words (deal with gender issue)
                 # but we want a lonely entity for all the B- sharing the same prefix.
                 # This removes artificial extension :
-                token = re.sub('.dela$', '', token)
-                token = re.sub('.du$', '', token)
-                token = re.sub('.des$', '', token)
-                token = re.sub('.le$', '', token)
-                token = re.sub('.la$', '', token)
-                token = re.sub('.les$', '', token)
-                token = re.sub('.un$', '', token)
-                token = re.sub('.une$', '', token)
-                token = re.sub('.des$', '', token)
-                token = re.sub('.ma$', '', token)
-                token = re.sub('.mon$', '', token)
-                token = re.sub('.mes$', '', token)
+                token = re.sub('#.*$', '', token)
 
                 sentence.append(item)
                 iob.append(token)
@@ -130,14 +119,19 @@ def process(output_path: str, nb_utterance: int):
     intents_file = os.path.join(output_path, 'intents.txt')
     logger.info('Generate train outputs files : {sentence}, {iob} and {intents}'.format(
         sentence=sentence_file, iob=iob_file, intents=intents_file))
+
+    counter = 0
     with open(sentence_file, 'w') as f_sentence, open(iob_file, 'w') as f_iob, open(
-                    intents_file, 'w') as f_intent:
+            intents_file, 'w') as f_intent:
         for item in labeled_sentences:
             logger.debug("Process sentence : {}".format(item))
             parts = item.split(';')
             f_sentence.write(parts[0] + '\n')
             f_iob.write(parts[1] + '\n')
             f_intent.write(parts[2] + '\n')
+            counter += 1
+
+    logger.info('Generate {counter} sentences'.format(counter=counter))
 
 
 if __name__ == '__main__':
@@ -158,5 +152,8 @@ if __name__ == '__main__':
 
     dictionaries_loader = DictionariesLoader(os.path.join(script_dir, arguments['--dictionaries']))
     templates_loader = TemplateLoader(os.path.join(script_dir, arguments['--templates']))
-    nb_iterations = int(arguments['--utterance']) or 10
-    process(arguments['--output_path'], nb_iterations)
+    if arguments['--utterance'] is None:
+        nb_utterances = 10
+    else:
+        nb_utterances = int(arguments['--utterance'])
+    process(arguments['--output_path'], nb_utterances)

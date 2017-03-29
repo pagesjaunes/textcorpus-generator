@@ -20,3 +20,4 @@ class TemplateLoader:
                 line = line.lstrip()
                 if not line.startswith('#') and len(line) > 0:
                     self.templates.extend(expand(line))
+        logger.info('Load {counter} templates'.format(counter=len(self.templates)))
