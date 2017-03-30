@@ -51,18 +51,18 @@ Setting parenthesis tells the engine that it must iterates over each item of the
 For instance :
 
 ```
-I (like|love|am fan of) (badminton|saucisses)
+I (like|love|am fan of) (badminton|sausages)
 ```
 
 will be expanded as :
 
 ```
 I like badminton
-I like saucisses
+I like sausages
 I love badminton
-I love saucisses
+I love sausages
 I am fan of badminton
-I am fan of saucisses
+I am fan of sausages
 ```
 
 ## Dictionaries
@@ -119,3 +119,27 @@ I (juste want|X-want) to rent (a B-product|some B-product) in (B-city|B-zipcode)
 
 > Note that # character is supported and can be used at the beginning of a line to skip it from sentence generation.
 
+## Introduce variation in entity generation
+
+It is possible to have several patterns of a same entity : a given entity may be relied to as many dictionaries as you want, juste suffix the file name / tag name with the # character.
+For instance, the entity representing a "Professional" may be used in different way, according to its activity :
+
+- Health => I want an appointement in Chicago with Doctor House as soon as possible
+- Food => I need to contact Mario to fix a water leak
+- ...
+
+Both Mario and Doctor House have to be tagged as "B-Pro" but can't be in the same file. For this use case, juste add a "#attribute" to the main "B-Pro" pattern.
+Sentences in the template file will look like :
+
+- I want an appointement in B-city with B-pro#health as soon as possible
+- I need to contact B-pro#plumber to fix a water leak
+
+They are relied to two dictionaries :
+
+- B-pro#health.csv
+- B-pro#plumber.csv
+
+And they generate these IOB forms :
+
+- I want an appointement in Chicago with Doctor House as soon as possible : O O O O B-city O B-pro I-Pro as soon as possible
+- I need to contact Mario to fix a water leak : O O O O B-pro O O O O O
