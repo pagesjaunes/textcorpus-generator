@@ -34,5 +34,5 @@ class DictionariesLoader:
             with open(file_name) as fp:
                 dictionary_name = basename.replace('.csv', "")
                 for line in fp:
-                    dictionary.append(standardization(line.lstrip()))
+                    dictionary.append(standardization(line.rstrip()))
                 self.dictionaries[dictionary_name] = dictionary

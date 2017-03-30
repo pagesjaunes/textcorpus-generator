@@ -27,6 +27,17 @@ from textcorpus_generator.util.template_loader import TemplateLoader
 labeled_sentences = []
 
 
+def verify(sentence: str, iob: str) -> bool:
+    tokens1 = sentence.rstrip().split(" ")
+    tokens2 = iob.rstrip().split(" ")
+
+    if len(tokens1) != len(tokens2):
+        logger.error("Wrong number of tokens %d;%d : %s \n", len(tokens1), len(tokens2), sentence);
+        return False
+
+    return True
+
+
 def pick_random_item_in_dictionary(token: str) -> str:
     """
     Get an item randomnly from a dictionnary
@@ -93,7 +104,10 @@ def build_sentence_and_iob(template: str) -> str:
                 iob.append("O")
 
     if len(sentence) > 0:
-        return ' '.join(sentence).lstrip() + ";" + ' '.join(iob)
+        part1 = ' '.join(sentence).lstrip()
+        part2 = ' '.join(iob)
+        verify(part1, part2)
+        return part1 + ";" + part2
     else:
         return ''
 

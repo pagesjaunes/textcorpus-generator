@@ -17,7 +17,7 @@ class TemplateLoader:
 
         with open(file_name) as fp:
             for line in fp:
-                line = line.lstrip()
+                line = line.rstrip()
                 if not line.startswith('#') and len(line) > 0:
                     self.templates.extend(expand(line))
         logger.info('Load {counter} templates'.format(counter=len(self.templates)))
