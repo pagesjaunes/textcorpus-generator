@@ -28,8 +28,8 @@ labeled_sentences = []
 
 
 def verify(sentence: str, iob: str) -> bool:
-    tokens1 = sentence.rstrip().split(" ")
-    tokens2 = iob.rstrip().split(" ")
+    tokens1 = sentence.split(" ")
+    tokens2 = iob.split(" ")
 
     if len(tokens1) != len(tokens2):
         logger.error("Wrong number of tokens %d;%d : %s \n", len(tokens1), len(tokens2), sentence);
@@ -66,7 +66,6 @@ def build_sentence_and_iob(template: str) -> str:
     sentence = []
     iob = []
 
-    template = template.rstrip()
     if template.find("B-") > 0 or template.find("X-") > 0:
         tokens = template.split(' ')
         for token in tokens:

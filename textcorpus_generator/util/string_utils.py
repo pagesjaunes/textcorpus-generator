@@ -8,6 +8,8 @@ def standardization(item: str) -> str:
 
     # remove '\n'
     item = item.strip('\n')
+    # remove ' '
+    item = item.strip()
     # remove(bla bla)
     item = re.sub(SLOT_REGEX, '', item)
     # strip punctuation
