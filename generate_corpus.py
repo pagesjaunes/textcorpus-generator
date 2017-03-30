@@ -106,10 +106,9 @@ def build_sentence_and_iob(template: str) -> str:
     if len(sentence) > 0:
         part1 = ' '.join(sentence).lstrip()
         part2 = ' '.join(iob)
-        verify(part1, part2)
-        return part1 + ";" + part2
-    else:
-        return ''
+        if verify(part1, part2):
+            return part1 + ";" + part2
+    return ''
 
 
 def process(output_path: str, nb_utterance: int):
