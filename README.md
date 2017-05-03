@@ -19,6 +19,8 @@ pytest test/
 
 # Running main generator
 To generate a corpus run the main generator
+The generator is controlled by the number of sentences it must generate : parameter --sentences (100000 by default).
+By default, the distribution of sentences by intention is uniform. It is possible to specify the distribution using an instance of Balancer
 ```
 """
     Text corpus generation
@@ -31,7 +33,7 @@ Options:
     --templates=filepath    Sets the path to the template file
     --dictionaries=path     Sets the path to the dictionary directory
     --output_path=path      Sets the path where to write the generated corpus
-    --utterance=int         Number of utterances over a template for a given
+    --sentences=int         Number of sentences to generate (minimum)
     --debug                 Debug version of the script
 
 """
