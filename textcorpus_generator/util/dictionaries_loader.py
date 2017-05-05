@@ -27,7 +27,10 @@ class DictionariesLoader:
             self.process_file(os.path.join(dictionaries_path, file))
 
     def process_file(self, file_name):
-
+        """
+        Process a dictionary file
+        :param file_name:
+        """
         basename = os.path.basename(file_name)
         if basename.startswith("B-") or basename.startswith("X-"):
             dictionary = []
@@ -39,6 +42,10 @@ class DictionariesLoader:
                 self.dictionaries[dictionary_name] = dictionary
 
     def get_iob_list(self):
+        """
+        Get a list of all the IOB tokens
+        :return:
+        """
         return ['O'] + list(
             itertools.chain.from_iterable(('B-' + dictionary, 'I-' + dictionary) for dictionary in self.get_labels_list()))
 
@@ -51,8 +58,3 @@ class DictionariesLoader:
 
         return list(labels)
 
-
-if __name__ == '__main__':
-    dictionaries_loader = DictionariesLoader('/Users/nbulteau/git/pj/lego-data/dictionaries')
-    print(dictionaries_loader.get_labels_list())
-    print(dictionaries_loader.get_iob_list())

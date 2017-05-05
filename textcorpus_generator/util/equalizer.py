@@ -2,13 +2,13 @@ import logging
 
 
 class Equalizer:
-    '''
-    Balancer is used too hamonise the intents ditribution .
+    """
+    Equalizer is used too harmonise the intents distribution.
 
     Args:
         intents (list of str) : intents list.
         requirements (dictionary of str) : percent requirements.
-    '''
+    """
 
     intents = {}
 
