@@ -92,7 +92,7 @@ class CorpusGenerator:
                 iob.append("O")
 
         if len(sentence) > 0:
-            part1 = ' '.join(sentence).lstrip()
+            part1 = ' '.join(sentence).lstrip().lower()
             part2 = ' '.join(iob)
 
             #
