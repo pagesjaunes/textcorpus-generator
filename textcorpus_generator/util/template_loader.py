@@ -21,7 +21,6 @@ class TemplateLoader:
                 line = line.rstrip()
                 if not line.startswith('#') and len(line) > 0:
                     self.templates.extend(expand(line))
-        logger.info('Load {templates} templates'.format(templates=len(self.templates)))
 
         for template in self.templates:
             if ';' in template:
@@ -31,9 +30,14 @@ class TemplateLoader:
             else:
                 logger.warning('Template {template} without intent'.format(template=template))
 
-        logger.info('Load {intents} intents'.format(intents=len(self.intents)))
+        logger.info('Load {templates} templates with {intents} distinct intents'.format(templates=len(self.templates), intents=len(self.intents)))
 
     def get_templates_by_intents(self, expected_intent: str):
+        """
+        Get all the templates that have the expected_intent intent
+        :param expected_intent: expected intent
+        :return: List of templates
+        """
         templates_by_intents = []
         for template in self.templates:
             if ';' in template:
@@ -42,3 +46,4 @@ class TemplateLoader:
                     templates_by_intents.append(template)
 
         return templates_by_intents
+

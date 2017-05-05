@@ -1,7 +1,7 @@
 import logging
 
 
-class Balancer(object):
+class Equalizer:
     '''
     Balancer is used too hamonise the intents ditribution .
 
@@ -14,7 +14,7 @@ class Balancer(object):
 
     def __init__(self, intents, requirements=None):
         self.logger = logging.getLogger(__name__)
-        self.logger.info("Init balancer")
+        self.logger.info("Init Equalizer")
 
         # init
         for intent in intents:
@@ -40,7 +40,6 @@ class Balancer(object):
             if self.intents[intent] is None:
                 self.intents[intent] = (100 - somme) / nb_itents_without_requirements
 
-        self.logger.info("Init balancer")
+    def display(self):
         for intent, value in self.intents.items():
-            persent = float("{0:.2f}".format(value))
-            self.logger.info("{intent} -> {value} %".format(intent=intent, value=persent))
+            self.logger.info("{intent} -> {value} %".format(intent=intent, value=float("{0:.2f}".format(value))))

@@ -5,6 +5,7 @@ Load dictionnaries in memory from a directory containing a list of dictionnaries
 Dictionnary files follow the pattern "B-(.)+" or "X-(.)+)"
 """
 
+import itertools
 import logging
 import os
 from os import listdir
@@ -36,3 +37,22 @@ class DictionariesLoader:
                 for line in fp:
                     dictionary.append(standardization(line))
                 self.dictionaries[dictionary_name] = dictionary
+
+    def get_iob_list(self):
+        return ['O'] + list(
+            itertools.chain.from_iterable(('B-' + dictionary, 'I-' + dictionary) for dictionary in self.get_labels_list()))
+
+    def get_labels_list(self):
+        """
+        Get all the iob labels used in the templates
+        :return:
+        """
+        labels = set(label[2:].split('#')[0] for label in self.dictionaries.keys() if label.startswith('B-'))
+
+        return list(labels)
+
+
+if __name__ == '__main__':
+    dictionaries_loader = DictionariesLoader('/Users/nbulteau/git/pj/lego-data/dictionaries')
+    print(dictionaries_loader.get_labels_list())
+    print(dictionaries_loader.get_iob_list())
