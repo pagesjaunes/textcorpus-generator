@@ -115,7 +115,7 @@ O O O O O O O B-city
 Of course, dictionaries and multi form pattern can be associated
 
 ```
-I (juste want|X-want) to rent (a B-product|some B-product) in (B-city|B-zipcode)
+I (just want|X-want) to rent (a B-product|some B-product) in (B-city|B-zipcode)
 
 ```
 
@@ -123,14 +123,14 @@ I (juste want|X-want) to rent (a B-product|some B-product) in (B-city|B-zipcode)
 
 ## Introduce variation in entity generation
 
-It is possible to have several patterns of a same entity : a given entity may be relied to as many dictionaries as you want, juste suffix the file name / tag name with the # character.
+It is possible to have several patterns of a same entity : a given entity may be relied to as many dictionaries as you want, simply suffix the file name / tag name with the # character.
 For instance, the entity representing a "Professional" may be used in different way, according to its activity :
 
 - Health => I want an appointement in Chicago with Doctor House as soon as possible
 - Food => I need to contact Mario to fix a water leak
 - ...
 
-Both Mario and Doctor House have to be tagged as "B-Pro" but can't be in the same file. For this use case, juste add a "#attribute" to the main "B-Pro" pattern.
+Both Mario and Doctor House have to be tagged as "B-Pro" but can't be in the same file. For this use case, simply add a "#attribute" to the main "B-Pro" pattern.
 Sentences in the template file will look like :
 
 - I want an appointement in B-city with B-pro#health as soon as possible
